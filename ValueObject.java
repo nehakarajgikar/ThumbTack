@@ -9,12 +9,12 @@
 public class ValueObject {
 
 	public Integer value;
-	public int tid;
+	public long tid;
 
 	public ValueObject() {
 	}
 
-	public ValueObject(int value, int tid) {
+	public ValueObject(int value, long tid) {
 		if (value == -1) {
 			this.value = null;
 		} else {
