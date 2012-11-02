@@ -9,17 +9,21 @@
 public class ValueObject {
 
 	public Integer value;
-	public long tid;
+	public Long tid;
 
 	public ValueObject() {
 	}
 
-	public ValueObject(int value, long tid) {
+	public ValueObject(Integer value, Long tid) {
 		if (value == -1) {
 			this.value = null;
 		} else {
 			this.value = value;
 		}
 		this.tid = tid;
+	}
+	
+	public String toString(){
+		return this.tid + " "+this.value;
 	}
 }
