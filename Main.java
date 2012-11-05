@@ -15,7 +15,7 @@ public class Main {
 	public static Map<Long, HashSet<String>> transactionMap = new HashMap<Long, HashSet<String>>();
 
 	public enum Command {
-		SET, UNSET, GET, NUMEQUALTO, BEGIN, ROLLBACK, COMMIT
+		SET, UNSET, GET, NUMEQUALTO, BEGIN, ROLLBACK, COMMIT, END
 	}
 
 	public class TransVariables {
@@ -67,6 +67,9 @@ public class Main {
 				break;
 			case NUMEQUALTO:
 				Integer num = main.numequalto(Integer.parseInt(tokens[1]));
+				
+					System.out.println(num);
+				
 				break;
 			case BEGIN:
 				 main.beginTransaction();
@@ -78,6 +81,9 @@ public class Main {
 			case COMMIT:
 				main.commit();
 				break;
+			case END:
+				main.commit();
+				return;
 			default:
 				System.err.println("ERROR in input");
 				return;
@@ -91,7 +97,7 @@ public class Main {
 	 * @param varName
 	 * @param value
 	 */
-	private void set(String varName, int value) {
+	public void set(String varName, int value) {
 		// get current tid
 		
 		if(tStk.isEmpty()){
@@ -136,14 +142,14 @@ public class Main {
 	 * 
 	 * @param var
 	 */
-	private void unset(String var) {
+	public void unset(String var) {
 
 		this.set(var, -1);
 		// Integer tid=tStk.peek();
 
 	}
 
-	private Integer get(String var) {
+	public Integer get(String var) {
 		LinkedList<ValueObject> valList = db.get(var);
 		if (valList == null)
 			return null;
@@ -153,7 +159,7 @@ public class Main {
 
 	}
 
-	private Integer numequalto(int value) {
+	public Integer numequalto(int value) {
 		// just check in valMap how many variables are set to value
 		if (valMap.containsKey(value)) {
 			return valMap.get(value);
@@ -163,13 +169,13 @@ public class Main {
 
 	}
 
-	private void beginTransaction() {
+	public void beginTransaction() {
 
 		tStk.push(new TransVariables( System.currentTimeMillis(), new HashSet<String>()));;
 
 	}
 
-	private void rollback() {
+	public void rollback() {
 		// go thru set of variables that were written or modfied in this
 		// transaction
 		TransVariables transVar = tStk.pop();
@@ -190,7 +196,7 @@ public class Main {
 
 	}
 
-	private void commit() {
+	public void commit() {
 
 		while (!tStk.isEmpty()) {
 			TransVariables transVar = tStk.pop();
